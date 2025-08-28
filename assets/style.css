@@ -1,0 +1,35 @@
+
+:root{ --hero:#8A0A0A; --ink:#fff; --bg:#0f0e10; --panel:#1a171d; --hot:#5A0000; --pad:clamp(14px,3vw,48px) }
+*{box-sizing:border-box} html,body{height:100%} body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+a{color:inherit;text-decoration:none}
+.sidebar{position:fixed;inset:0 auto 0 0;width:200px;background:#000;border-right:1px solid #191919;padding:24px 18px;display:flex;flex-direction:column;gap:24px;z-index:20}
+.brand{display:grid;place-items:center;padding:8px 0;border-bottom:1px dashed #202020;height:80px;overflow:hidden}
+.brand img{max-width:140px;height:auto}
+.section-title{font-weight:900;letter-spacing:1px;text-transform:uppercase;font-size:18px}
+.dotline{height:1px;border-bottom:1px dashed #202020;margin:6px 0 12px}
+.menu{display:flex;flex-direction:column;gap:8px}
+.menu a{display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:6px;color:#e7e7e7;font-size:14px}
+.menu a .bullet{width:10px;height:10px;border-radius:2px;background:#2b2b2b;flex:none}
+.menu a.active .bullet{background:#fff}
+.menu a:hover{background:#0f0f0f}
+.wrap{margin-left:200px;min-height:100vh;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.9fr)}
+.hero{background:linear-gradient(180deg,rgba(0,0,0,.85) 0%,rgba(0,0,0,.6) 38%,rgba(0,0,0,.35) 72%,rgba(0,0,0,.15) 100%), radial-gradient(110% 100% at 50% 0%,rgba(0,0,0,.55) 0%,rgba(0,0,0,0) 60%), var(--hero);color:#fff;display:grid;grid-template-rows:auto 1fr auto;align-items:start}
+.ribbon{position:sticky;top:0;background:linear-gradient(180deg,var(--hot),#300000);color:#fff;font-weight:800;letter-spacing:.5px;padding:10px 14px;width:max-content;border-bottom-right-radius:8px;box-shadow:0 6px 22px rgba(0,0,0,.35)}
+.hero-inner{padding:var(--pad) var(--pad) 0}
+.eyeblock{position:relative;height:48vh;min-height:320px;margin-top:24px;background:#111;overflow:hidden;border-top:1px dashed rgba(0,0,0,.35);border-bottom:1px dashed rgba(0,0,0,.35);border-radius:10px}
+.eyeblock video, .eyeblock img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.unmute-btn{position:absolute;right:12px;bottom:12px;background:rgba(0,0,0,.6);color:#fff;border:1px solid #333;border-radius:10px;padding:8px 10px;font-weight:700}
+.tag{display:inline-block;background:linear-gradient(180deg,var(--hot),#300000);color:#fff;font-weight:800;padding:6px 10px;border-radius:6px;margin:14px 0;box-shadow:0 6px 18px rgba(0,0,0,.35)}
+.note{padding:10px var(--pad) 24px;font-size:14px}
+.huge{font-family:Georgia,'Times New Roman',serif;font-weight:900;line-height:.9;margin:0}
+.huge.small{font-size:clamp(24px,6vw,50px)}
+.huge.big{font-size:clamp(34px,10vw,66px)}
+.fancy{-webkit-text-stroke:1px rgba(0,0,0,.35);text-shadow:0 12px 30px rgba(0,0,0,.55),0 1px 0 rgba(255,255,255,.15)}
+.panel{position:relative;padding:var(--pad);background:repeating-linear-gradient(135deg,rgba(255,255,255,.04) 0 2px,rgba(0,0,0,0) 2px 8px),var(--panel)}
+.watermark{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none}
+.watermark h2{font-size:clamp(22px,7vw,48px);line-height:1;color:rgba(255,255,255,.06);letter-spacing:2px;text-transform:uppercase;text-align:center;max-width:90%}
+.copy{position:relative;z-index:2;max-width:820px;color:#d7d7e3;margin-inline:auto}
+.copy-banner{width:100%;height:clamp(160px,28vw,220px);object-fit:cover;border-radius:12px;margin-bottom:16px;box-shadow:0 10px 28px rgba(0,0,0,.35)}
+.footer{grid-column:1/-1;padding:14px 24px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;background:#0e0d10;color:#a8a8ba;font-size:13px;border-top:1px solid #1f1f24}
+@media (max-width:1100px){.wrap{grid-template-columns:1fr}.panel{order:3}.footer{order:4}}
+@media (max-width:760px){.sidebar{position:sticky;top:0;width:100%;inset:auto 0 auto 0;flex-direction:row;align-items:center;gap:12px;padding:12px 14px;overflow:auto}.wrap{margin-left:0}.menu{flex-direction:row;gap:6px;flex:1;overflow:auto}.menu a{padding:6px 10px;white-space:nowrap}.section-title,.contact,.brand{display:none}.hero-inner{padding:28px 18px 0}}

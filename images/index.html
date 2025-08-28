@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Gizemli Dünya</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800;900&family=Playfair+Display:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --hero:#8A0A0A;         /* daha koyu kırmızı (taban) */
+      --ink:#ffffff;          /* kahraman yazı rengi (beyaz) */
+      --bg:#0f0e10;           /* site arka plan */
+      --panel:#1a171d;        /* sağ panel zemin */
+      --muted:#a7a7a7;        /* ikincil metin */
+      --hot:#5A0000;          /* vurgu/şerit: çok koyu kırmızı */
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0; background:var(--bg); color:#fff; font-family:Montserrat, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif}
+    a{color:inherit; text-decoration:none}
+
+    /* === SOL MENÜ (SİYAH) === */
+    .sidebar{position:fixed; inset:0 auto 0 0; width:200px; background:#000; border-right:1px solid #191919; padding:24px 18px; display:flex; flex-direction:column; gap:24px; z-index:20}
+    .brand{display:grid; place-items:center; padding:10px 0; border-bottom:1px dashed #202020}
+    .brand img{max-width:140px; height:auto}
+    .section-title{font-weight:900; letter-spacing:1px; text-transform:uppercase; font-size:18px}
+    .dotline{height:1px; border-bottom:1px dashed #202020; margin:6px 0 12px}
+    .menu{display:flex; flex-direction:column; gap:8px}
+    .menu a{display:flex; align-items:center; gap:8px; padding:6px 8px; border-radius:6px; color:#e7e7e7; font-size:14px}
+    .menu a .bullet{width:10px; height:10px; border-radius:2px; background:#2b2b2b; flex:none}
+    .menu a.active .bullet{background:#fff}
+    .menu a:hover{background:#0f0f0f}
+    .contact{font-size:13px; color:#bdbdd1}
+    .contact a{color:#fff; border-bottom:1px dotted #fff}
+
+    /* === ANA ÇERÇEVE === */
+    .wrap{margin-left:200px; min-height:100vh; display:grid; grid-template-columns:1fr 0.9fr}
+
+    /* KAHRAMAN BLOK: kırmızı + daha yoğun siyah gölgeler */
+    .hero{
+      background:
+        linear-gradient(180deg, rgba(0,0,0,.85) 0%, rgba(0,0,0,.6) 38%, rgba(0,0,0,.35) 72%, rgba(0,0,0,.15) 100%),
+        radial-gradient(110% 100% at 50% 0%, rgba(0,0,0,.55) 0%, rgba(0,0,0,0) 60%),
+        var(--hero);
+      color:var(--ink);
+      display:grid; grid-template-rows:auto 1fr auto; align-items:start;
+    }
+    .ribbon{position:sticky; top:0; background:linear-gradient(180deg, var(--hot), #300000); color:#fff; font-weight:800; text-transform:none; letter-spacing:.5px; padding:10px 14px; width:max-content; border-bottom-right-radius:8px; box-shadow:0 6px 22px rgba(0,0,0,.35)}
+    .ribbon .tt-cap{text-transform:capitalize}
+    .hero-inner{padding:48px 48px 0}
+
+    /* GÖRSEL/VİDEO ALANI */
+    .eyeblock{position:relative; height:48vh; min-height:320px; margin-top:24px; background:#111; overflow:hidden; border-top:1px dashed rgba(0,0,0,.35); border-bottom:1px dashed rgba(0,0,0,.35); border-radius:10px}
+    .eyeblock video{position:absolute; inset:0; width:100%; height:100%; object-fit:cover}
+    .unmute-btn{position:absolute; right:12px; bottom:12px; background:rgba(0,0,0,.6); color:#fff; border:1px solid #333; border-radius:10px; padding:8px 10px; font-weight:700; backdrop-filter: blur(2px); cursor:pointer}
+
+    .tag{display:inline-block; background:linear-gradient(180deg, var(--hot), #300000); color:#fff; font-weight:800; padding:6px 10px; border-radius:6px; margin:14px 0; box-shadow:0 6px 18px rgba(0,0,0,.35)}
+    .note{padding:10px 48px 24px; font-size:14px}
+
+    .huge{font-family:'Playfair Display', serif; font-weight:900; line-height:.9; letter-spacing:1px; margin:0}
+    .huge.small{font-size:50px; opacity:.98}
+    .huge.big{font-size:68px}
+    /* ŞIK BAŞLIK EFEKTİ */
+    .fancy{
+      background:linear-gradient(180deg, #ffffff 0%, #ececec 35%, #cfcfcf 60%, #f7f7f7 100%),
+                 linear-gradient(90deg, rgba(255,255,255,.0) 0%, rgba(255,255,255,.7) 50%, rgba(255,255,255,.0) 100%);
+      background-size:200% 100%, 200% 100%;
+      background-blend-mode:screen;
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+      -webkit-text-stroke:1px rgba(0,0,0,.35);
+      text-shadow:0 12px 30px rgba(0,0,0,.55), 0 1px 0 rgba(255,255,255,.15);
+      letter-spacing:2px;
+      animation:shine 6s ease-in-out infinite;
+    }
+    @keyframes shine{0%{background-position:0% 50%, -50% 50%}50%{background-position:100% 50%, 150% 50%}100%{background-position:0% 50%, -50% 50%}}
+
+    /* SAĞ DOKU PANEL */
+    .panel{position:relative; padding:48px; background:
+       repeating-linear-gradient(135deg, rgba(255,255,255,.04) 0 2px, rgba(0,0,0,0) 2px 8px), var(--panel);}
+    .watermark{position:absolute; inset:0; display:grid; place-items:center; pointer-events:none}
+    .watermark h2{font-family:'Playfair Display', serif; font-size:48px; line-height:1; color:rgba(255,255,255,.06); letter-spacing:2px; text-transform:uppercase; text-align:center; max-width:90%}
+    .panel .copy{position:relative; z-index:2; max-width:680px; color:#d7d7e3}
+    .copy-banner{width:100%; height:220px; object-fit:cover; border-radius:12px; margin-bottom:16px; box-shadow:0 10px 28px rgba(0,0,0,.35)}
+    .panel .copy h3{margin:0 0 16px; font-size:22px; letter-spacing:.5px}
+    .panel .copy p{color:#cfd0e4; line-height:1.8}
+
+    .bullets{margin-top:18px; display:grid; gap:10px}
+    .bullets li{list-style:none; padding-left:18px; position:relative}
+    .bullets li::before{content:"•"; position:absolute; left:0; color:#a64040}
+
+    .footer{grid-column:1 / -1; padding:14px 24px; display:flex; justify-content:space-between; gap:12px; background:#0e0d10; color:#a8a8ba; font-size:13px; border-top:1px solid #1f1f24}
+
+    /* === Sohbet Botu === */
+    .chat-toggle{position:fixed; right:18px; bottom:18px; width:56px; height:56px; border-radius:50%; background:#b30000; color:#fff; display:grid; place-items:center; font-weight:800; box-shadow:0 10px 26px rgba(0,0,0,.35); cursor:pointer; z-index:50}
+    .chat-box{position:fixed; right:18px; bottom:86px; width:320px; max-height:70vh; display:none; flex-direction:column; background:#0b0b0b; border:1px solid #1f1f1f; border-radius:14px; box-shadow:0 18px 48px rgba(0,0,0,.45); overflow:hidden; z-index:50}
+    .chat-header{background:#1a1a1a; color:#fff; padding:10px 12px; font-weight:700; letter-spacing:.5px; display:flex; align-items:center; justify-content:space-between}
+    .chat-messages{padding:12px; overflow:auto; display:flex; flex-direction:column; gap:8px}
+    .msg{padding:8px 10px; border-radius:10px; max-width:85%; font-size:14px; line-height:1.35}
+    .msg.user{align-self:flex-end; background:#222; color:#fff}
+    .msg.bot{align-self:flex-start; background:#151515; color:#e7e7e7; border:1px solid #242424}
+    .chat-input{display:flex; gap:6px; padding:10px; background:#101010; border-top:1px solid #1f1f1f}
+    .chat-input input{flex:1; background:#0c0c0c; border:1px solid #222; border-radius:10px; padding:10px; color:#fff}
+    .chat-input button{background:#b30000; color:#fff; border:none; border-radius:10px; padding:10px 12px; font-weight:700; cursor:pointer}
+
+    @media (max-width:1100px){.wrap{grid-template-columns:1fr} .panel{order:3} .footer{order:4}}
+    @media (max-width:760px){.sidebar{position:sticky; width:100%; inset:auto 0 auto 0; flex-direction:row; align-items:center; gap:16px; padding:12px 14px; overflow:auto} .brand{display:none} .wrap{margin-left:0} .menu{flex-direction:row; gap:6px; flex:1; overflow:auto} .menu a{padding:6px 10px; white-space:nowrap} .section-title{display:none} .contact{display:none} .hero-inner{padding:28px} .huge.small{font-size:32px} .huge.big{font-size:52px;}}
+  </style>
+</head>
+<body>
+  <aside class="sidebar" aria-label="Kenar Menü">
+    <div class="brand">
+      <img src="images/goz.gif" alt="Logo">
+    </div>
+    <div>
+      <div class="section-title">İçerik.</div>
+      <div class="dotline"></div>
+      <nav class="menu">
+        <a class="active" href="#ana-sayfa"><span class="bullet"></span>Ana Sayfa</a>
+        <a href="#hakkinda"><span class="bullet"></span>Hakkında</a>
+        <a href="#gizemli-dunya"><span class="bullet"></span>Gizemli Dünya</a>
+        <a href="#forum-blog"><span class="bullet"></span>Forum/Blog</a>
+        <a href="#mesaj-tahtasi"><span class="bullet"></span>Mesaj Tahtası</a>
+        <a href="#muzik"><span class="bullet"></span>Müzik</a>
+        <a href="#gorsel-show"><span class="bullet"></span>Görsel Show</a>
+        <a href="#iletisim"><span class="bullet"></span>İletişim</a>
+      </nav>
+    </div>
+    <div>
+      <div class="section-title">İletişim.</div>
+      <div class="dotline"></div>
+      <div class="contact">
+        <div>E-posta: <a href="mailto:gizemlidunya777@gmail.com">gizemlidunya777@gmail.com</a></div>
+      </div>
+    </div>
+  </aside>
+  <main class="wrap">
+    <section id="ana-sayfa" class="hero">
+      <div class="ribbon"><span class="tt-cap">Gerçek ile düş arasında, seni bekleyen bir yolculuk var.</span></div>
+      <div class="hero-inner">
+        <h1 class="huge small">Gizemli Dünyanın</h1>
+        <h1 class="huge big fancy">Kapıları Aralanıyor</h1>
+        <div class="tag">Hayal et, keşfet, eğlen!</div>
+        <div class="eyeblock" aria-label="Kahraman görsel alanı">
+          <video id="heroVideo" src="video/giris.mp4" autoplay muted loop playsinline preload="metadata"></video>
+          <button class="unmute-btn" id="unmuteBtn" aria-label="Sesi aç">🔊 Sesi Aç</button>
+        </div>
+      </div>
+      <p class="note">Burada özgür, samimi ve dilediğinizce cesur olmak hakkınız var.</p>
+    </section>
+    <section class="panel">
+      <div class="watermark"><h2>Gizemli Dünya</h2></div>
+      <div class="copy">
+        <img class="copy-banner" src="images/ust.jpg" alt="Üst görsel">
+        <h3>Kısa bir davet</h3>
+        <p>İnsanların gizli dünyalarına, arzularına ve en derin hayallerine doğru beraberce yol alıyoruz. Aynı dünyayı paylaşsak da her birimizin taşıdığı farklı duyguların konuşulduğu; güzel düşlerin keşfedildiği, merakın yol gösterdiği bir kavşak burası. Cesaretin ve özgürlüğün sınırlarını birlikte keşfedeceğimiz, kalbin rehber, aklın yoldaş olduğu bu yolculuğa hoş geldiniz.</p>
+      </div>
+    </section>
+    <footer class="footer">
+      <span>© 2025 Gizemli Dünya</span>
+      <span>Tüm hakları saklıdır.</span>
+    </footer>
+  </main>
+<!-- SOHBET BUTONU & KUTUSU -->
+  <div class="chat-toggle" id="chatToggle" title="Sohbet">💬</div>
+  <div class="chat-box" id="chatBox" role="dialog" aria-label="Sohbet Botu">
+    <div class="chat-header">Sohbet <button id="chatClose" style="all:unset; cursor:pointer; font-weight:800">✕</button></div>
+    <div class="chat-messages" id="chatMessages"></div>
+    <div class="chat-input">
+      <input id="chatInput" type="text" placeholder="Bir şey yaz..." />
+      <button id="chatSend">Gönder</button>
+    </div>
+  </div>
+
+  <script>
+    (function(){
+      const box = document.getElementById('chatBox');
+      const toggle = document.getElementById('chatToggle');
+      const closeBtn = document.getElementById('chatClose');
+      const list = document.getElementById('chatMessages');
+      const input = document.getElementById('chatInput');
+      const send = document.getElementById('chatSend');
+
+      function show(){box.style.display='flex'; setTimeout(()=>input.focus(),50);}
+      function hide(){box.style.display='none';}
+      toggle.addEventListener('click', ()=> box.style.display==='flex'? hide(): show());
+      closeBtn.addEventListener('click', hide);
+
+      function addMsg(side, text){
+        const div=document.createElement('div');
+        div.className='msg '+side; div.textContent=text; list.appendChild(div); list.scrollTop=list.scrollHeight;
+      }
+      function botReply(q){
+        const t=q.toLowerCase();
+        if(/merhaba|selam|hello|selamlar/.test(t)) return 'Merhaba! Gizemli Dünya\'ya hoş geldin. Nasıl yardımcı olabilirim?';
+        if(/men[uü]|nasil|yardim|help/.test(t)) return 'Menüdeki başlıklardan gezinebilirsin: Ana Sayfa, Hakkında, Gizemli Dünya, Forum/Blog, Mesaj Tahtası, Müzik, Görsel Show, İletişim.';
+        if(/iletisim|email|mail/.test(t)) return 'Bize mail at: gizemlidunya777@gmail.com';
+        if(/video|giris/.test(t)) return 'Ana bölümde açılış videomuz otomatik oynar. Görmüyorsan tarayıcıda sayfayı yenilemeyi dene.';
+        return 'Bunu not aldım. Yakında daha akıllı bir asistanla cevap vereceğim. Şimdilik temel sorulara yardımcı olabiliyorum.';
+      }
+      function sendNow(){
+        const val=(input.value||'').trim(); if(!val) return; addMsg('user', val); input.value='';
+        setTimeout(()=>{ addMsg('bot', botReply(val)); }, 400);
+      }
+      send.addEventListener('click', sendNow);
+      input.addEventListener('keydown', e=>{ if(e.key==='Enter') sendNow(); });
+
+      // karşılama
+      setTimeout(()=> addMsg('bot', 'Gizemli Dünya\'ya hoş geldin! Bir sorunun varsa yazabilirsin.'), 600);
+    })();
+  </script>
+<script>
+    // Hero video: tıkla ve sesi aç
+    (function(){
+      const v = document.getElementById('heroVideo');
+      const b = document.getElementById('unmuteBtn');
+      if(v && b){
+        function unmute(){
+          try{ v.muted=false; v.play(); }catch(e){}
+          b.style.display='none';
+        }
+        b.addEventListener('click', unmute);
+        v.addEventListener('pointerdown', unmute);
+        document.addEventListener('keydown', e=>{ if(e.key && e.key.toLowerCase()==='m') unmute(); });
+      }
+    })();
+  </script>
+</body>
+</html>
